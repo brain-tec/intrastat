@@ -180,8 +180,8 @@ msgid "Company currency"
 msgstr ""
 
 #. module: intrastat_product
-#: code:addons/intrastat_product/report/intrastat_product_report_xls.py:226
-#: code:addons/intrastat_product/report/intrastat_product_report_xls.py:237
+#: code:addons/intrastat_product/report/intrastat_product_report_xls.py:225
+#: code:addons/intrastat_product/report/intrastat_product_report_xls.py:236
 #: model:ir.model.fields,field_description:intrastat_product.field_intrastat_product_declaration_line_computation_line_ids
 #, python-format
 msgid "Computation Lines"
@@ -219,10 +219,8 @@ msgid "Country Code"
 msgstr ""
 
 #. module: intrastat_product
-#: code:addons/intrastat_product/report/intrastat_product_report_xls.py:42
 #: model:ir.model.fields,field_description:intrastat_product.field_intrastat_product_computation_line_product_origin_country_id
 #: model:ir.model.fields,field_description:intrastat_product.field_intrastat_product_declaration_line_product_origin_country_id
-#, python-format
 msgid "Country of Origin of the Product"
 msgstr ""
 
@@ -283,8 +281,8 @@ msgid "Declaration Line"
 msgstr ""
 
 #. module: intrastat_product
-#: code:addons/intrastat_product/report/intrastat_product_report_xls.py:228
-#: code:addons/intrastat_product/report/intrastat_product_report_xls.py:239
+#: code:addons/intrastat_product/report/intrastat_product_report_xls.py:227
+#: code:addons/intrastat_product/report/intrastat_product_report_xls.py:238
 #: model:ir.ui.view,arch_db:intrastat_product.intrastat_product_declaration_view_form
 #, python-format
 msgid "Declaration Lines"
@@ -779,7 +777,7 @@ msgid "Net weight in Kg"
 msgstr ""
 
 #. module: intrastat_product
-#: code:addons/intrastat_product/report/intrastat_product_report_xls.py:240
+#: code:addons/intrastat_product/report/intrastat_product_report_xls.py:239
 #, python-format
 msgid "No"
 msgstr ""
@@ -890,8 +888,10 @@ msgid "Product"
 msgstr ""
 
 #. module: intrastat_product
+#: code:addons/intrastat_product/report/intrastat_product_report_xls.py:42
 #: model:ir.ui.view,arch_db:intrastat_product.intrastat_product_computation_line_view_tree
 #: model:ir.ui.view,arch_db:intrastat_product.intrastat_product_declaration_line_view_tree
+#, python-format
 msgid "Product C/O"
 msgstr ""
 
@@ -1164,7 +1164,7 @@ msgid "You must set company's country !"
 msgstr ""
 
 #. module: intrastat_product
-#: code:addons/intrastat_product/report/intrastat_product_report_xls.py:240
+#: code:addons/intrastat_product/report/intrastat_product_report_xls.py:239
 #, python-format
 msgid "for period %s"
 msgstr ""
