@@ -83,7 +83,7 @@ class IntrastatProductDeclaration(models.Model):
         compute="_compute_year_month",
         string="Period",
         readonly=True,
-        track_visibility="onchange",
+        tracking=True,
         store=True,
         help="Year and month of the declaration.",
     )
@@ -92,7 +92,7 @@ class IntrastatProductDeclaration(models.Model):
         string="Type",
         required=True,
         states={"done": [("readonly", True)]},
-        track_visibility="onchange",
+        tracking=True,
         help="Select the declaration type.",
     )
     action = fields.Selection(
@@ -101,7 +101,7 @@ class IntrastatProductDeclaration(models.Model):
         required=True,
         default="replace",
         states={"done": [("readonly", True)]},
-        track_visibility="onchange",
+        tracking=True,
     )
     revision = fields.Integer(
         string="Revision",
@@ -125,7 +125,7 @@ class IntrastatProductDeclaration(models.Model):
         compute="_compute_numbers",
         string="Number of Declaration Lines",
         store=True,
-        track_visibility="onchange",
+        tracking=True,
     )
     total_amount = fields.Integer(
         compute="_compute_numbers",
@@ -140,7 +140,7 @@ class IntrastatProductDeclaration(models.Model):
         selection=[("draft", "Draft"), ("done", "Done")],
         string="State",
         readonly=True,
-        track_visibility="onchange",
+        tracking=True,
         copy=False,
         default="draft",
         help="State of the declaration. When the state is set to 'Done', "
@@ -473,6 +473,8 @@ class IntrastatProductDeclaration(models.Model):
         Complete this method in the localization module
         with the country-specific logic for arrivals and dispatches.
         Cf. l10n_be_intrastat_product_declaration for an example
+        The dates are based on account.move,date in stead of invoice_date
+        to ensure consistency between intrastat and intracomm tax declaration.
         """
         start_date = date(int(self.year), int(self.month), 1)
         end_date = start_date + relativedelta(day=1, months=+1, days=-1)
@@ -482,6 +484,7 @@ class IntrastatProductDeclaration(models.Model):
             ("state", "=", "posted"),
             ("intrastat_country", "=", True),
             ("company_id", "=", self.company_id.id),
+            ("type", "!=", "entry"),
         ]
         return domain
 
@@ -538,7 +541,7 @@ class IntrastatProductDeclaration(models.Model):
                         inv_line.price_subtotal,
                         self.company_id.currency_id,
                         self.company_id,
-                        invoice.date_invoice,
+                        invoice.date,
                     )
                     total_inv_accessory_costs_cc += acost
 
