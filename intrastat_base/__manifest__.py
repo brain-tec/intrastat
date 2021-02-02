@@ -5,7 +5,7 @@
 
 {
     "name": "Intrastat Reporting Base",
-    "version": "14.0.1.0.0",
+    "version": "14.0.2.0.0",
     "category": "Intrastat",
     "license": "AGPL-3",
     "summary": "Base module for Intrastat reporting",
@@ -15,13 +15,11 @@
     "excludes": ["account_intrastat"],
     "data": [
         "security/ir.model.access.csv",
-        "data/country_data.xml",
         "views/product_template.xml",
         "views/res_partner.xml",
-        "views/res_country.xml",
-        "views/account_tax.xml",
         "views/res_config_settings.xml",
         "views/intrastat.xml",
+        "views/account_fiscal_position.xml",
     ],
     "demo": ["demo/intrastat_demo.xml"],
     "installable": True,
