@@ -7,7 +7,7 @@
 
 {
     "name": "Intrastat Product",
-    "version": "13.0.2.0.2",
+    "version": "13.0.3.0.0",
     "category": "Intrastat",
     "license": "AGPL-3",
     "summary": "Base module for Intrastat Product",
@@ -31,9 +31,11 @@
         "views/intrastat_transport_mode.xml",
         "views/intrastat_product_declaration.xml",
         "views/res_config_settings.xml",
+        "views/res_partner_view.xml",
         "views/account_move.xml",
         "views/sale_order.xml",
         "views/stock_warehouse.xml",
+        "views/report_invoice.xml",
         "data/intrastat_transport_mode.xml",
         "data/intrastat_unit.xml",
     ],
