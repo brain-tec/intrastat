@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* product_harmonized_system_stock
+# 	* intrastat_product_generic
 #
 msgid ""
 msgstr ""
@@ -16,7 +16,9 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.17\n"
 
-#. module: product_harmonized_system_stock
-#: model:ir.ui.menu,name:product_harmonized_system_stock.hs_code_menu
-msgid "H.S. Codes"
-msgstr "Codici H.S."
+#. module: intrastat_product_generic
+#: model:ir.actions.act_window,name:intrastat_product_generic.intrastat_product_declaration_action_generic
+#: model:ir.ui.menu,name:intrastat_product_generic.intrastat_product_declaration_menu_generic
+#: model:res.groups,name:intrastat_product_generic.group_intrastat_product_generic
+msgid "Generic Intrastat Product Declaration"
+msgstr "Dichiarazione Intrastat prodotto generica"
