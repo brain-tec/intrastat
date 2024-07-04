@@ -8,7 +8,7 @@ from openupgradelib import openupgrade
 # copied and adapted from v14
 
 
-@openupgrade.migrate()
+@openupgrade.migrate(use_env=True)
 def migrate(env, version):
     if not version:
         return
