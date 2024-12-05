@@ -1,9 +1,10 @@
 [project]
 name = "odoo-addons-oca-intrastat-extrastat"
-version = "18.0.20241203.0"
+version = "18.0.20241204.0"
 dependencies = [
     "odoo-addon-product_harmonized_system==18.0.*",
     "odoo-addon-product_harmonized_system_delivery==18.0.*",
+    "odoo-addon-product_harmonized_system_stock==18.0.*",
 ]
 classifiers=[
     "Programming Language :: Python",
