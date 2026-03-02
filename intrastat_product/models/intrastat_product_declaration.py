@@ -17,6 +17,17 @@ from odoo.tools import float_is_zero
 _logger = logging.getLogger(__name__)
 
 
+SRC_DEST_COUNTRY_CODE_MAPPING = {
+    "GB": "XI",
+    "GR": "EL",
+}
+
+PRODUCT_ORIGIN_COUNTRY_CODE_MAPPING = {
+    "GB": "XU",
+    "GR": "EL",
+}
+
+
 class IntrastatProductDeclaration(models.Model):
     _name = "intrastat.product.declaration"
     _description = "Intrastat Product Declaration"
@@ -98,6 +109,9 @@ class IntrastatProductDeclaration(models.Model):
     )
     declaration_type = fields.Selection(
         selection="_get_declaration_type",
+        compute="_compute_declaration_type",
+        store=True,
+        precompute=True,
         string="Type",
         required=True,
         tracking=True,
@@ -188,6 +202,45 @@ class IntrastatProductDeclaration(models.Model):
         for this in self:
             if this.year and this.month:
                 this.year_month = "-".join([this.year, this.month])
+
+    @api.depends("company_id", "year", "month")
+    def _compute_declaration_type(self):
+        for this in self:
+            company = this.company_id
+            declaration_type = False
+            if company:
+                if (
+                    company.intrastat_arrivals == "exempt"
+                    and company.intrastat_dispatches != "exempt"
+                ):
+                    declaration_type = "dispatches"
+                elif (
+                    company.intrastat_dispatches == "exempt"
+                    and company.intrastat_arrivals != "exempt"
+                ):
+                    declaration_type = "arrivals"
+                elif (
+                    company.intrastat_dispatches != "exempt"
+                    and company.intrastat_arrivals != "exempt"
+                    and this.year
+                    and this.month
+                ):
+                    existing_decls = self.search(
+                        [
+                            ("year", "=", this.year),
+                            ("month", "=", this.month),
+                            ("company_id", "=", company.id),
+                        ]
+                    )
+                    if len(existing_decls) == 1:
+                        declaration_type = (
+                            existing_decls.declaration_type == "arrivals"
+                            and "dispatches"
+                            or "arrivals"
+                        )
+                    elif not existing_decls:
+                        declaration_type = "dispatches"
+            this.declaration_type = declaration_type
 
     @api.constrains("company_id")
     def _check_company_country(self):
@@ -380,7 +433,12 @@ class IntrastatProductDeclaration(models.Model):
         elif source_uom.category_id == product.uom_id.category_id:
             # We suppose that, on product.template,
             # the 'weight' field is per uom_id
-            weight = product.weight * source_uom._compute_quantity(
+            # Test if module product_net_weight from OCA/product-attribute is installed
+            if hasattr(product, "net_weight"):
+                product_weight = product.net_weight
+            else:
+                product_weight = product.weight
+            weight = product_weight * source_uom._compute_quantity(
                 line_qty, product.uom_id
             )
         else:
@@ -898,7 +956,6 @@ class IntrastatProductDeclaration(models.Model):
         self.ensure_one()
         self.xml_attachment_id and self.xml_attachment_id.unlink()
 
-    @api.model
     def _xls_computation_line_fields(self):
         """
         Update list in custom module to add/drop columns or change order
@@ -924,7 +981,6 @@ class IntrastatProductDeclaration(models.Model):
             "invoice",
         ]
 
-    @api.model
     def _xls_declaration_line_fields(self):
         """
         Update list in custom module to add/drop columns or change order
@@ -1122,8 +1178,7 @@ class IntrastatProductComputationLine(models.Model):
     def _compute_src_dest_country_code(self):
         for this in self:
             code = this.src_dest_country_id and this.src_dest_country_id.code or False
-            if code == "GB":
-                code = "XI"  # Northern Ireland
+            code = SRC_DEST_COUNTRY_CODE_MAPPING.get(code, code)
             this.src_dest_country_code = code
 
     @api.depends("product_origin_country_id")
@@ -1134,10 +1189,7 @@ class IntrastatProductComputationLine(models.Model):
                 and this.product_origin_country_id.code
                 or False
             )
-            if code == "GB":
-                code = "XU"
-                # XU can be used when you don't know if the product
-                # originate from Great-Britain or from Northern Ireland
+            code = PRODUCT_ORIGIN_COUNTRY_CODE_MAPPING.get(code, code)
             this.product_origin_country_code = code
 
     @api.constrains("vat")
